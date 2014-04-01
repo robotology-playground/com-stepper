@@ -14,6 +14,9 @@ SOURCE_GROUP("Header Files" FILES ${folder_header})
 
 FIND_PACKAGE(YARP REQUIRED)
 FIND_PACKAGE(ICUB REQUIRED)
+
+set(YCM_USE_CMAKE_PROPOSED TRUE CACHE BOOL "Use files including unmerged cmake patches")
+
 find_package(YCM REQUIRED)
 
 # add yarp definitions
