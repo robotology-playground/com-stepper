@@ -14,10 +14,10 @@ file(GLOB yscope ${CMAKE_CURRENT_SOURCE_DIR}/conf/yarpscope_comStepperErrors.xml
                  ${CMAKE_CURRENT_SOURCE_DIR}/conf/yarpscope_comStepperControls.xml)
 
 yarp_install( FILES ${conf}
-              DESTINATION ${CODYCO_CONTEXTS_INSTALL_DIR}/${appname})
+              DESTINATION ${YARP_CONTEXTS_INSTALL_DIR}/${appname})
 
 yarp_install( FILES ${scripts}
-              DESTINATION ${CODYCO_APPLICATIONS_TEMPLATES_INSTALL_DIR})
+              DESTINATION ${YARP_APPLICATIONS_TEMPLATES_INSTALL_DIR})
 
 yarp_install( FILES ${yscope}
-        DESTINATION ${CODYCO_CONTEXTS_INSTALL_DIR}/${appname}/yarpscope)
+        DESTINATION ${YARP_CONTEXTS_INSTALL_DIR}/${appname}/yarpscope)

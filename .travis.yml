@@ -1,0 +1,34 @@
+language: cpp
+
+compiler:
+  - clang
+  - gcc
+
+install:
+  - sudo sh -c 'echo "deb http://www.icub.org/ubuntu precise contrib/science" > /etc/apt/sources.list.d/icub.list'
+  - sudo apt-get update
+  - sudo apt-get install -qq libeigen3-dev 
+  - sudo apt-get --force-yes install icub
+
+before_script:
+  # Build and install YCM
+  - git clone https://github.com/robotology/ycm.git
+  - cd ycm
+  - mkdir build
+  - cd build 
+  - cmake ..
+  - make 
+  - sudo make install
+  - cd ../..
+  # Prepare comStepper build
+  - mkdir build
+  - cd build
+  - cmake ..
+
+script:
+  - make
+  - sudo make install
+
+notifications:
+  email:
+    - pegua1@gmail.com
