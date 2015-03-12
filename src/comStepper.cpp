@@ -697,9 +697,9 @@ void comStepperThread::updateRotations()
     Tba = Right_Leg->getH();
     Tbc =  Left_Leg->getH();
     
-    Tab = iCub::ctrl::SE3inv(Tba);
+    Tab = SE3inv(Tba);
     Tac = Tab * Tbc;
-    Tca = iCub::ctrl::SE3inv(Tac);
+    Tca = SE3inv(Tac);
     
     Jba = Right_Leg->GeoJacobian();
     Jbc = Left_Leg->GeoJacobian();
@@ -1241,7 +1241,7 @@ void comStepperThread::jacobianR2LrightSupport(Matrix &jR2LrightSupport, Vector 
     if (verbose)
     {
         fprintf(stderr, "pac_d: %s\n", pacd.toString().c_str());
-        fprintf(stderr, "Rac_d: %s\n", iCub::ctrl::dcm2axis(Racd).toString().c_str());
+        fprintf(stderr, "Rac_d: %s\n", dcm2axis(Racd).toString().c_str());
     }
     
     nd = Racd.submatrix(0, 2, 0, 0);   ne = Rac.submatrix(0, 2, 0, 0);
@@ -1553,7 +1553,7 @@ void comStepperThread::jacobianR2LleftSupport(Matrix &jR2LleftSupport, Vector &e
     if (verbose)
     {
         fprintf(stderr, "pca_d: %s\n", pcad.toString().c_str());
-        fprintf(stderr, "Rca_d: %s\n", iCub::ctrl::dcm2axis(Rcad).toString().c_str());
+        fprintf(stderr, "Rca_d: %s\n", dcm2axis(Rcad).toString().c_str());
     }
     
     nd = Rcad.submatrix(0, 2, 0, 0);   ne = Rca.submatrix(0, 2, 0, 0);
@@ -1990,7 +1990,7 @@ Vector comStepperThread::computeDeltaError(Vector q0R, Vector q0L, Vector q1R, V
 {
     Matrix Tba0 = Right_Leg->getH(q0R*CTRL_DEG2RAD);
     Matrix Tbc0 =  Left_Leg->getH(q0L*CTRL_DEG2RAD);
-    Matrix Tab0 = iCub::ctrl::SE3inv(Tba0);
+    Matrix Tab0 = SE3inv(Tba0);
     Matrix Tac0 = Tab0 * Tbc0;
     
     Matrix pba0 = Tba0.submatrix(0, 2, 3, 3);
@@ -2001,12 +2001,12 @@ Vector comStepperThread::computeDeltaError(Vector q0R, Vector q0L, Vector q1R, V
     Matrix Rba0 = Tba0.submatrix(0, 2, 0, 2);
     Matrix Rbc0 = Tbc0.submatrix(0, 2, 0, 2);
     Matrix Rac0 = Tac0.submatrix(0, 2, 0, 2);
-    Vector eo0_tmp = iCub::ctrl::dcm2axis(Rac0 * Rac0.transposed());
+    Vector eo0_tmp = dcm2axis(Rac0 * Rac0.transposed());
     Vector eo0 = eo0_tmp.subVector(0, 2) * sin(eo0_tmp(3));;
     
     Matrix Tba1 = Right_Leg->getH(q1R*CTRL_DEG2RAD);
     Matrix Tbc1 = Left_Leg->getH(q1L*CTRL_DEG2RAD);
-    Matrix Tab1 = iCub::ctrl::SE3inv(Tba1);
+    Matrix Tab1 = SE3inv(Tba1);
     Matrix Tac1 = Tab1 * Tbc1;
     
     Matrix pba1 = Tba1.submatrix(0, 2, 3, 3);
@@ -2017,7 +2017,7 @@ Vector comStepperThread::computeDeltaError(Vector q0R, Vector q0L, Vector q1R, V
     Matrix Rba1 = Tba1.submatrix(0, 2, 0, 2);
     Matrix Rbc1 = Tbc1.submatrix(0, 2, 0, 2);
     Matrix Rac1 = Tac1.submatrix(0, 2, 0, 2);
-    Vector eo1_tmp = iCub::ctrl::dcm2axis(Rac0 * Rac1.transposed());
+    Vector eo1_tmp = dcm2axis(Rac0 * Rac1.transposed());
     Vector eo1 = eo1_tmp.subVector(0, 2) * sin(eo1_tmp(3));;
     
     Matrix delta_ep = ep1 - ep0;
@@ -2036,7 +2036,7 @@ Vector comStepperThread::computeDeltaProjB(Vector q0R, Vector q0L, Vector q1R, V
     
     Matrix Tba0 = Right_Leg->getH(q0R*CTRL_DEG2RAD);
     Matrix Tbc0 =  Left_Leg->getH(q0L*CTRL_DEG2RAD);
-    Matrix Tab0 = iCub::ctrl::SE3inv(Tba0);
+    Matrix Tab0 = SE3inv(Tba0);
     Matrix Tac0 = Tab0 * Tbc0;
     
     Matrix pba0 = Tba0.submatrix(0, 2, 3, 3);
@@ -2051,7 +2051,7 @@ Vector comStepperThread::computeDeltaProjB(Vector q0R, Vector q0L, Vector q1R, V
     
     Matrix Tba1 = Right_Leg->getH(q1R*CTRL_DEG2RAD);
     Matrix Tbc1 = Left_Leg->getH(q1L*CTRL_DEG2RAD);
-    Matrix Tab1 = iCub::ctrl::SE3inv(Tba1);
+    Matrix Tab1 = SE3inv(Tba1);
     Matrix Tac1 = Tab1 * Tbc1;
     
     Matrix pba1 = Tba1.submatrix(0, 2, 3, 3);
@@ -2078,7 +2078,7 @@ Vector comStepperThread::computeDeltaProjA(Vector q0R, Vector q0L, Vector q1R, V
     
     Matrix Tba0 = Right_Leg->getH(q0R*CTRL_DEG2RAD);
     Matrix Tbc0 =  Left_Leg->getH(q0L*CTRL_DEG2RAD);
-    Matrix Tab0 = iCub::ctrl::SE3inv(Tba0);
+    Matrix Tab0 = SE3inv(Tba0);
     Matrix Tac0 = Tab0 * Tbc0;
     
     Matrix pba0 = Tba0.submatrix(0, 2, 3, 3);
@@ -2093,7 +2093,7 @@ Vector comStepperThread::computeDeltaProjA(Vector q0R, Vector q0L, Vector q1R, V
     
     Matrix Tba1 = Right_Leg->getH(q1R*CTRL_DEG2RAD);
     Matrix Tbc1 = Left_Leg->getH(q1L*CTRL_DEG2RAD);
-    Matrix Tab1 = iCub::ctrl::SE3inv(Tba1);
+    Matrix Tab1 = SE3inv(Tba1);
     Matrix Tac1 = Tab1 * Tbc1;
     
     Matrix pba1 = Tba1.submatrix(0, 2, 3, 3);
@@ -2133,7 +2133,7 @@ void comStepperThread::computeDeltaProjAReal(Vector dqR, Vector dqL, Vector dqT,
     
     Matrix Tba0 = Right_Leg->getH(j0RL*CTRL_DEG2RAD);
     Matrix Tbc0 =  Left_Leg->getH(j0LL*CTRL_DEG2RAD);
-    Matrix Tab0 = iCub::ctrl::SE3inv(Tba0);
+    Matrix Tab0 = SE3inv(Tba0);
     Matrix Tac0 = Tab0 * Tbc0;
     
     Matrix pba0 = Tba0.submatrix(0, 2, 3, 3);
@@ -2180,7 +2180,7 @@ void comStepperThread::computeDeltaProjAReal(Vector dqR, Vector dqL, Vector dqT,
     
     Matrix Tba1 = Right_Leg->getH((j0RL+dqR)*CTRL_DEG2RAD);
     Matrix Tbc1 = Left_Leg->getH((j0LL+dqL)*CTRL_DEG2RAD);
-    Matrix Tab1 = iCub::ctrl::SE3inv(Tba1);
+    Matrix Tab1 = SE3inv(Tba1);
     Matrix Tac1 = Tab1 * Tbc1;
     
     Matrix pba1 = Tba1.submatrix(0, 2, 3, 3);
@@ -2221,7 +2221,7 @@ void comStepperThread::computeDeltaProjCReal(Vector dqR, Vector dqL, Vector dqT,
     
     Matrix Tba0 = Right_Leg->getH(j0RL*CTRL_DEG2RAD);
     Matrix Tbc0 =  Left_Leg->getH(j0LL*CTRL_DEG2RAD);
-    Matrix Tcb0 = iCub::ctrl::SE3inv(Tbc0);
+    Matrix Tcb0 = SE3inv(Tbc0);
     Matrix Tca0 = Tcb0 * Tba0;
     
     Matrix pba0 = Tba0.submatrix(0, 2, 3, 3);
@@ -2265,7 +2265,7 @@ void comStepperThread::computeDeltaProjCReal(Vector dqR, Vector dqL, Vector dqT,
     
     Matrix Tba1 = Right_Leg->getH((j0RL+dqR)*CTRL_DEG2RAD);
     Matrix Tbc1 = Left_Leg->getH((j0LL+dqL)*CTRL_DEG2RAD);
-    Matrix Tcb1 = iCub::ctrl::SE3inv(Tbc1);
+    Matrix Tcb1 = SE3inv(Tbc1);
     Matrix Tca1 = Tcb1 * Tba1;
     
     Matrix pba1 = Tba1.submatrix(0, 2, 3, 3);
